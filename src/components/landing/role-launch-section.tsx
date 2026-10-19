@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "motion/react";
 import { UserCheck, ShieldAlert, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -6,7 +9,13 @@ export function RoleLaunchSection() {
   return (
     <section className="py-16 md:py-20 border-t border-white/[0.08] relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="rounded-2xl bg-gradient-to-b from-[#14141d] to-[#0e0e14] border border-violet-500/20 p-8 sm:p-12 relative overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5 }}
+          className="rounded-2xl bg-gradient-to-b from-[#14141d] to-[#0e0e14] border border-violet-500/20 p-8 sm:p-12 relative overflow-hidden"
+        >
           {/* Subtle violet ambient accent */}
           <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-violet-600/10 blur-3xl pointer-events-none" />
 
@@ -42,7 +51,7 @@ export function RoleLaunchSection() {
               </Link>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

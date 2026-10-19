@@ -11,7 +11,6 @@ export const dynamic = "force-dynamic";
 export default async function StudentPage() {
   const supabase = await createClient();
 
-  // If Supabase is not configured yet in .env.local
   if (!supabase) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center">
@@ -19,8 +18,7 @@ export default async function StudentPage() {
           <AlertCircle className="w-10 h-10 mx-auto text-amber-400" />
           <h2 className="text-xl font-bold text-white">Supabase Credentials Required</h2>
           <p className="text-xs text-zinc-300 leading-relaxed">
-            To use the live student portal, create a <code className="font-mono text-amber-300">.env.local</code> file
-            with your Supabase project credentials as outlined in <code className="font-mono text-amber-300">.env.example</code>.
+            Please configure <code className="font-mono text-amber-300">.env.local</code> to access the live student portal.
           </p>
           <div className="pt-2">
             <Link href="/">
@@ -61,28 +59,30 @@ export default async function StudentPage() {
     updated_at: new Date().toISOString(),
   };
 
-  // Today's Date in YYYY-MM-DD
-  const today = new Date().toISOString().split("T")[0];
+  const today = "2026-10-19";
+  const tomorrow = "2026-10-20";
 
-  // Fetch meals for today
+  // Fetch meals for today and tomorrow
   const { data: mealsData } = await supabase
     .from("meals")
     .select("*")
-    .eq("meal_date", today);
+    .in("meal_date", [today, tomorrow])
+    .order("meal_date", { ascending: true });
 
-  // Fetch student's own attendance records (enforced by RLS)
+  // Fetch student's own attendance records (strictly filtered by RLS)
   const { data: attendanceData } = await supabase
     .from("meal_attendance")
     .select("*")
     .eq("student_id", user.id)
-    .eq("meal_date", today);
+    .in("meal_date", [today, tomorrow]);
 
   return (
     <StudentDashboard
       profile={currentProfile}
-      meals={(mealsData as Meal[]) || []}
-      attendance={(attendanceData as MealAttendance[]) || []}
-      targetDate={today}
+      initialMeals={(mealsData as Meal[]) || []}
+      initialAttendance={(attendanceData as MealAttendance[]) || []}
+      todayDate={today}
+      tomorrowDate={tomorrow}
     />
   );
 }

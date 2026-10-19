@@ -7,12 +7,14 @@ import type { MealType, AttendanceStatus } from "@/types/database";
 export interface AttendanceActionResult {
   error?: string;
   success?: boolean;
+  updatedAt?: string;
 }
 
 export async function submitAttendanceAction(
   mealDate: string,
   mealType: MealType,
-  status: AttendanceStatus
+  status: AttendanceStatus,
+  notes?: string
 ): Promise<AttendanceActionResult> {
   const supabase = await createClient();
   if (!supabase) {
@@ -42,10 +44,12 @@ export async function submitAttendanceAction(
     const cutoffDate = new Date(meal.cutoff_time);
     if (new Date() > cutoffDate) {
       return {
-        error: `Submission deadline has passed for this ${mealType} (Cutoff: ${cutoffDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}). Response locked.`,
+        error: `Submission deadline has passed for this ${mealType} (Cutoff was ${cutoffDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}). Response is locked.`,
       };
     }
   }
+
+  const nowIso = new Date().toISOString();
 
   // 3. Upsert attendance record enforcing 1 response per student per meal/date
   const { error } = await supabase.from("meal_attendance").upsert(
@@ -54,7 +58,8 @@ export async function submitAttendanceAction(
       meal_date: mealDate,
       meal_type: mealType,
       status,
-      updated_at: new Date().toISOString(),
+      notes: notes || "",
+      updated_at: nowIso,
     },
     {
       onConflict: "student_id,meal_date,meal_type",
@@ -68,5 +73,48 @@ export async function submitAttendanceAction(
   revalidatePath("/student");
   revalidatePath("/manager");
 
+  return {
+    success: true,
+    updatedAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }),
+  };
+}
+
+export async function updateMealConfigAction(
+  mealId: string,
+  menuTitle: string,
+  menuItems: string[],
+  cutoffTime: string
+): Promise<{ error?: string; success?: boolean }> {
+  const supabase = await createClient();
+  if (!supabase) return { error: "Database client unavailable." };
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: "Unauthorized." };
+
+  // Strict manager verification
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (!profile || profile.role !== "manager") {
+    return { error: "Forbidden: Only managers can update meal configurations." };
+  }
+
+  const { error } = await supabase
+    .from("meals")
+    .update({
+      menu_title: menuTitle,
+      menu_items: menuItems,
+      cutoff_time: cutoffTime,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", mealId);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/student");
+  revalidatePath("/manager");
   return { success: true };
 }

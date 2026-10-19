@@ -18,9 +18,7 @@ export default async function ManagerPage() {
           <AlertCircle className="w-10 h-10 mx-auto text-amber-400" />
           <h2 className="text-xl font-bold text-white">Supabase Configuration Required</h2>
           <p className="text-xs text-zinc-300 leading-relaxed">
-            The manager portal requires a live PostgreSQL connection. Provide your credentials in{" "}
-            <code className="font-mono text-amber-300">.env.local</code> and run the migration in{" "}
-            <code className="font-mono text-amber-300">supabase/schema.sql</code>.
+            The manager portal requires a live PostgreSQL connection. Please configure <code className="font-mono text-amber-300">.env.local</code>.
           </p>
           <div className="pt-2">
             <Link href="/">
@@ -55,19 +53,29 @@ export default async function ManagerPage() {
     redirect("/student?error=unauthorized_manager_access");
   }
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = "2026-10-19";
+  const tomorrow = "2026-10-20";
 
-  // Fetch forecast data from SQL aggregation view
+  // Query total student count
+  const { count: studentCount } = await supabase
+    .from("profiles")
+    .select("*", { count: "exact", head: true })
+    .eq("role", "student");
+
+  // Query demand forecasts from SQL view
   const { data: forecastData } = await supabase
     .from("meal_demand_forecast")
     .select("*")
-    .eq("meal_date", today);
+    .in("meal_date", [today, tomorrow])
+    .order("meal_date", { ascending: true });
 
   return (
     <ManagerDashboard
       profile={profile as Profile}
-      forecasts={(forecastData as MealDemandForecast[]) || []}
-      targetDate={today}
+      allForecasts={(forecastData as MealDemandForecast[]) || []}
+      totalStudentCount={studentCount || 0}
+      todayDate={today}
+      tomorrowDate={tomorrow}
     />
   );
 }
