@@ -37,67 +37,70 @@ export function HeroWordmark() {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative min-h-[70vh] sm:min-h-[78vh] flex flex-col items-center justify-center pt-16 pb-20 px-4 sm:px-6 max-w-6xl mx-auto overflow-hidden text-center"
+      className="relative min-h-[72vh] sm:min-h-[82vh] flex flex-col items-center justify-center pt-16 pb-20 px-4 sm:px-6 w-full max-w-7xl mx-auto overflow-hidden text-center isolate"
     >
       {/* Interactive WebGL PatternWaves Ambient Silk Surface */}
-      <div className="absolute inset-0 w-full h-full pointer-events-auto -z-10 opacity-55 overflow-hidden">
+      <div className="absolute inset-0 w-full h-full pointer-events-auto z-0 overflow-hidden">
         <PatternWaves
           preset="silk"
-          color="#8b5cf6"
-          backgroundColor="#08080a"
+          color="#ffffff"
+          backgroundColor="transparent"
           fade="edges"
-          fadeSize={0.65}
+          fadeSize={0.25}
           interactive={true}
           cursorSize={60}
-          cursorStrength={0.7}
+          cursorStrength={0.75}
         />
       </div>
-      {/* Centered Dominant Editorial Wordmark */}
-      <motion.div
-        style={{
-          rotateX,
-          rotateY,
-          transformPerspective: 1200,
-        }}
-        className="w-full flex items-center justify-center select-none cursor-default py-4"
-      >
-        <div className="flex items-baseline justify-center tracking-[-0.05em] leading-[0.85] text-center w-full">
-          {/* "mess" — bold contemporary sans-serif */}
-          <motion.span
-            initial={{ y: "80%", opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="font-editorial-sans text-[clamp(3.5rem,14vw,11.5rem)] text-white inline-block font-black pr-0.5 sm:pr-1"
-          >
-            mess
-          </motion.span>
 
-          {/* "flow" — elegant italic serif */}
-          <motion.span
-            initial={{ y: "80%", opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.95, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="font-editorial-serif text-[clamp(3.7rem,14.5vw,12rem)] text-violet-400 inline-block font-normal italic relative -ml-0.5 sm:-ml-1"
-          >
-            flow
-          </motion.span>
-        </div>
-      </motion.div>
+      {/* Centered Dominant Editorial Wordmark in foreground */}
+      <div className="relative z-10 pointer-events-none w-full flex flex-col items-center justify-center">
+        <motion.div
+          style={{
+            rotateX,
+            rotateY,
+            transformPerspective: 1200,
+          }}
+          className="w-full flex items-center justify-center select-none cursor-default py-4"
+        >
+          <div className="flex items-baseline justify-center tracking-[-0.05em] leading-[0.85] text-center w-full">
+            {/* "mess" — bold contemporary sans-serif */}
+            <motion.span
+              initial={{ y: "80%", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+              className="font-editorial-sans text-[clamp(3.5rem,14vw,11.5rem)] text-white inline-block font-black pr-0.5 sm:pr-1 drop-shadow-[0_8px_24px_rgba(0,0,0,0.9)]"
+            >
+              mess
+            </motion.span>
 
-      {/* Centered Minimal Descriptive Text */}
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.25 }}
-        className="mt-6 sm:mt-8 max-w-xl mx-auto text-center space-y-1.5"
-      >
-        <p className="text-base sm:text-xl text-zinc-300 font-normal tracking-tight">
-          Predictive meal planning for mess operations.
-        </p>
-        <p className="text-xs sm:text-sm text-zinc-500 font-mono uppercase tracking-wider">
-          A zero waste initiative.
-        </p>
-      </motion.div>
+            {/* "flow" — elegant italic serif */}
+            <motion.span
+              initial={{ y: "80%", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.95, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="font-editorial-serif text-[clamp(3.7rem,14.5vw,12rem)] text-violet-400 inline-block font-normal italic relative -ml-0.5 sm:-ml-1 drop-shadow-[0_8px_24px_rgba(0,0,0,0.9)]"
+            >
+              flow
+            </motion.span>
+          </div>
+        </motion.div>
+
+        {/* Centered Minimal Descriptive Text */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.25 }}
+          className="mt-6 sm:mt-8 max-w-xl mx-auto text-center space-y-1.5 pointer-events-auto"
+        >
+          <p className="text-base sm:text-xl text-zinc-200 font-normal tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+            Predictive meal planning for mess operations.
+          </p>
+          <p className="text-xs sm:text-sm text-zinc-400 font-mono uppercase tracking-wider drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+            A zero waste initiative.
+          </p>
+        </motion.div>
+      </div>
     </section>
   );
 }

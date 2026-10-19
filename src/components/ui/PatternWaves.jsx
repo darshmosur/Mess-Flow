@@ -103,6 +103,7 @@ const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 const luminance = rgba => 0.2126 * rgba[0] + 0.7152 * rgba[1] + 0.0722 * rgba[2];
 
 const parseColor = (value, fallback) => {
+  if (value === 'transparent') return [0, 0, 0, 0];
   try {
     const ctx = document.createElement('canvas').getContext('2d');
     if (!ctx) return fallback;
