@@ -18,16 +18,16 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-background/85 border-b border-white/[0.08]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="h-9 w-9 rounded-lg bg-violet-600/20 border border-violet-500/40 flex items-center justify-center text-violet-400 group-hover:scale-105 group-hover:border-violet-400 transition-all">
-            <UtensilsCrossed className="w-4 h-4" />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-semibold text-base tracking-tight text-white flex items-center gap-1.5">
-              Mess<span className="text-violet-400 font-bold">Flow</span>
-              <span className="px-1.5 py-0.2 rounded text-[9px] font-mono uppercase bg-violet-950 text-violet-400 border border-violet-800/60">
-                MVP
-              </span>
+        <Link href="/" className="flex items-center gap-2 group">
+          <div className="flex items-baseline tracking-[-0.04em] text-lg sm:text-xl">
+            <span className="font-editorial-sans font-black text-white group-hover:text-violet-100 transition-colors">
+              mess
+            </span>
+            <span className="font-editorial-serif font-normal italic text-violet-400 group-hover:text-violet-300 transition-colors">
+              flow
+            </span>
+            <span className="ml-2 px-1.5 py-0.2 rounded text-[9px] font-mono uppercase bg-violet-950/80 text-violet-400 border border-violet-800/60">
+              v1.0
             </span>
           </div>
         </Link>

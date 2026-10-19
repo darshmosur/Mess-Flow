@@ -54,6 +54,11 @@ const config: Config = {
         tighter: "-0.04em",
         tight: "-0.025em",
       },
+      fontFamily: {
+        sans: ["var(--font-sans)", "sans-serif"],
+        serif: ["var(--font-serif)", "serif"],
+        mono: ["var(--font-mono)", "monospace"],
+      },
       backgroundImage: {
         "grid-pattern": "radial-gradient(rgba(139, 92, 246, 0.12) 1px, transparent 1px)",
         "hero-glow": "radial-gradient(circle 800px at 50% -100px, rgba(139, 92, 246, 0.22), transparent 70%)",

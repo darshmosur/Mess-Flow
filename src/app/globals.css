@@ -3,16 +3,17 @@
 @tailwind utilities;
 
 :root {
-  --background: #09090b;
-  --foreground: #f8fafc;
-  --card: #111116;
-  --card-foreground: #f8fafc;
+  --background: #08080a;
+  --foreground: #f4f4f5;
+  --card: #0e0e13;
+  --card-foreground: #f4f4f5;
   --primary: #8b5cf6;
   --primary-dark: #7c3aed;
-  --primary-glow: rgba(139, 92, 246, 0.18);
+  --primary-glow: rgba(139, 92, 246, 0.15);
   --border: rgba(255, 255, 255, 0.08);
-  --muted: #181820;
-  --muted-foreground: #94a3b8;
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --muted: #14141a;
+  --muted-foreground: #94949e;
 }
 
 * {
@@ -34,29 +35,57 @@ body {
   overflow-x: hidden;
 }
 
+/* Buttermax editorial wordmark utilities */
+.wordmark-container {
+  letter-spacing: -0.05em;
+  line-height: 0.88;
+}
+
+.font-editorial-serif {
+  font-family: var(--font-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.font-editorial-sans {
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+}
+
 /* Subtle dot/grid background */
 .bg-grid-subtle {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
 .bg-radial-violet {
   background: radial-gradient(
-    ellipse 80% 50% at 50% -20%,
-    rgba(139, 92, 246, 0.18),
-    rgba(9, 9, 11, 0)
+    ellipse 70% 40% at 50% 0%,
+    rgba(139, 92, 246, 0.14),
+    rgba(8, 8, 10, 0)
   );
 }
 
+.editorial-card {
+  background: #0e0e13;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.editorial-card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
 .glass-panel {
-  background: rgba(17, 17, 22, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(14, 14, 19, 0.8);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-panel-glow {
-  background: rgba(17, 17, 22, 0.85);
+  background: rgba(14, 14, 19, 0.9);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(139, 92, 246, 0.25);
