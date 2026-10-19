@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import PatternWaves from "@/components/ui/PatternWaves";
 
 export function HeroWordmark() {
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -36,8 +37,21 @@ export function HeroWordmark() {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative min-h-[65vh] sm:min-h-[72vh] flex flex-col items-center justify-center pt-16 pb-20 px-4 sm:px-6 max-w-6xl mx-auto overflow-hidden text-center"
+      className="relative min-h-[70vh] sm:min-h-[78vh] flex flex-col items-center justify-center pt-16 pb-20 px-4 sm:px-6 max-w-6xl mx-auto overflow-hidden text-center"
     >
+      {/* Interactive WebGL PatternWaves Ambient Silk Surface */}
+      <div className="absolute inset-0 w-full h-full pointer-events-auto -z-10 opacity-55 overflow-hidden">
+        <PatternWaves
+          preset="silk"
+          color="#8b5cf6"
+          backgroundColor="#08080a"
+          fade="edges"
+          fadeSize={0.65}
+          interactive={true}
+          cursorSize={60}
+          cursorStrength={0.7}
+        />
+      </div>
       {/* Centered Dominant Editorial Wordmark */}
       <motion.div
         style={{
