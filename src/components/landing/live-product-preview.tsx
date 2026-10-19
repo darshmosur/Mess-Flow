@@ -21,16 +21,8 @@ export function LiveProductPreview() {
   ];
 
   return (
-    <section className="relative py-24 sm:py-32 px-4 sm:px-8 border-t border-white/[0.07] max-w-7xl mx-auto">
-      {/* Section Header */}
-      <div className="flex items-center gap-3 mb-10 sm:mb-16">
-        <span className="text-xs font-mono uppercase tracking-widest text-violet-400">
-          03 / Live Interface Simulator
-        </span>
-        <div className="h-[1px] flex-1 bg-white/[0.07]" />
-      </div>
-
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+    <section className="relative py-16 sm:py-24 px-4 sm:px-8 border-t border-white/[0.07] max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div>
           <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-white leading-tight">
             Dual-viewport <span className="font-serif italic text-violet-400">telemetry</span>.

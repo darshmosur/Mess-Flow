@@ -19,33 +19,15 @@ export function Navbar() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Brand */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="flex items-baseline tracking-[-0.04em] text-lg sm:text-xl">
+          <div className="flex items-baseline tracking-[-0.04em] text-xl">
             <span className="font-editorial-sans font-black text-white group-hover:text-violet-100 transition-colors">
               mess
             </span>
             <span className="font-editorial-serif font-normal italic text-violet-400 group-hover:text-violet-300 transition-colors">
               flow
             </span>
-            <span className="ml-2 px-1.5 py-0.2 rounded text-[9px] font-mono uppercase bg-violet-950/80 text-violet-400 border border-violet-800/60">
-              v1.0
-            </span>
           </div>
         </Link>
-
-        {/* Demo Credentials Quick-Copy Pill for Judges */}
-        <button
-          onClick={copyDemoCreds}
-          title="Click to copy test credentials for judges"
-          className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900 border border-white/10 hover:border-violet-500/40 text-[11px] font-mono text-zinc-400 hover:text-zinc-200 cursor-pointer transition-colors"
-        >
-          <Key className="w-3 h-3 text-violet-400" />
-          <span>Demo: manager@messflow.com</span>
-          {copied ? (
-            <Check className="w-3 h-3 text-emerald-400 ml-1" />
-          ) : (
-            <Copy className="w-3 h-3 text-zinc-500 ml-1" />
-          )}
-        </button>
 
         {/* Action Controls: Student Login & Manager Portal */}
         <div className="flex items-center gap-2 sm:gap-3">
