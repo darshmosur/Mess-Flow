@@ -7,7 +7,6 @@ import { UserCheck, ShieldAlert, AlertCircle, ArrowRight, Lock, Mail } from "luc
 import { loginAction, type AuthActionResult } from "@/app/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { HairlinePadlock, HairlinePlot } from "@/components/ui/hairline-figures";
 
 export function LoginForm({ hasEnv }: { hasEnv: boolean }) {
   const searchParams = useSearchParams();
@@ -21,64 +20,12 @@ export function LoginForm({ hasEnv }: { hasEnv: boolean }) {
   );
 
   return (
-    <Card className="w-full max-w-lg p-3 sm:p-5 border-white/10 shadow-2xl glass-panel-glow">
-      {/* Role Switcher Tabs */}
-      <div className="flex items-center gap-1.5 p-1 rounded-xl bg-zinc-900/90 border border-white/10 mb-5">
-        <Link
-          href="/login?role=student"
-          className={`flex-1 py-1.5 text-center text-xs font-mono font-medium rounded-lg transition-all ${
-            !isManager
-              ? "bg-violet-600 text-white font-semibold shadow-sm"
-              : "text-zinc-400 hover:text-zinc-200"
-          }`}
-        >
-          Student Portal
-        </Link>
-        <Link
-          href="/login?role=manager"
-          className={`flex-1 py-1.5 text-center text-xs font-mono font-medium rounded-lg transition-all ${
-            isManager
-              ? "bg-violet-600 text-white font-semibold shadow-sm"
-              : "text-zinc-400 hover:text-zinc-200"
-          }`}
-        >
-          Manager Portal
-        </Link>
-      </div>
-
-      {/* Interactive Hairline Isometric Figures (Plot & Padlock) */}
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        <div className="flex flex-col items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/[0.07] hover:border-violet-500/40 transition-all group">
-          <div className="w-full max-w-[130px] flex items-center justify-center py-1">
-            <HairlinePlot intensity={0.75} play={true} className="w-full max-w-[120px]" />
-          </div>
-          <div className="text-center mt-2">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-violet-400 font-semibold block">
-              Demand Plot
-            </span>
-            <span className="text-[10px] text-zinc-500 font-mono block">
-              {isManager ? "Prep Batch Target" : "Meal Attendance"}
-            </span>
-          </div>
+    <Card className="w-full max-w-md p-2 border-white/10 shadow-2xl glass-panel-glow">
+      <CardHeader className="text-center pb-4">
+        <div className="mx-auto w-12 h-12 rounded-xl bg-violet-600/20 border border-violet-500/30 flex items-center justify-center text-violet-400 mb-2">
+          {isManager ? <ShieldAlert className="w-6 h-6" /> : <UserCheck className="w-6 h-6" />}
         </div>
-
-        <div className="flex flex-col items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/[0.07] hover:border-violet-500/40 transition-all group">
-          <div className="w-full max-w-[130px] flex items-center justify-center py-1">
-            <HairlinePadlock intensity={0.75} play={true} className="w-full max-w-[120px]" />
-          </div>
-          <div className="text-center mt-2">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-violet-400 font-semibold block">
-              Auth Padlock
-            </span>
-            <span className="text-[10px] text-zinc-500 font-mono block">
-              {isManager ? "Manager Verified" : "Student Session"}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <CardHeader className="text-center pb-4 pt-0">
-        <CardTitle className="text-xl font-bold tracking-tight text-white">
+        <CardTitle className="text-xl font-bold tracking-tight">
           {isManager ? "Mess Manager Sign In" : "Student Sign In"}
         </CardTitle>
         <CardDescription className="text-xs text-zinc-400">
@@ -88,7 +35,7 @@ export function LoginForm({ hasEnv }: { hasEnv: boolean }) {
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="space-y-4 pt-1">
+      <CardContent className="space-y-4 pt-2">
         {/* Environment Alert when credentials are not configured */}
         {!hasEnv && (
           <div className="rounded-lg bg-amber-950/60 border border-amber-500/40 p-3.5 text-xs text-amber-200 space-y-1">
