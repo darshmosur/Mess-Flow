@@ -53,21 +53,55 @@ export default async function ManagerPage() {
     redirect("/student?error=unauthorized_manager_access");
   }
 
-  const today = "2026-10-19";
-  const tomorrow = "2026-10-20";
+  const now = new Date();
+  const realToday = now.toISOString().split("T")[0];
+  const tomorrowObj = new Date(now);
+  tomorrowObj.setDate(tomorrowObj.getDate() + 1);
+  const realTomorrow = tomorrowObj.toISOString().split("T")[0];
+
+  // Try fetching forecasts for real calendar dates first
+  let { data: forecastData } = await supabase
+    .from("meal_demand_forecast")
+    .select("*")
+    .in("meal_date", [realToday, realTomorrow])
+    .order("meal_date", { ascending: true });
+
+  let today = realToday;
+  let tomorrow = realTomorrow;
+
+  // Gracefully fallback to scheduled dates in database if real calendar day has no records
+  if (!forecastData || forecastData.length === 0) {
+    const { data: latestMeals } = await supabase
+      .from("meals")
+      .select("meal_date")
+      .order("meal_date", { ascending: false })
+      .limit(6);
+
+    const dates = Array.from(new Set(latestMeals?.map((m) => m.meal_date) || [])).sort();
+    if (dates.length >= 2) {
+      today = dates[dates.length - 2];
+      tomorrow = dates[dates.length - 1];
+    } else if (dates.length === 1) {
+      today = dates[0];
+      tomorrow = dates[0];
+    } else {
+      today = "2026-10-19";
+      tomorrow = "2026-10-20";
+    }
+
+    const { data: fallbackForecasts } = await supabase
+      .from("meal_demand_forecast")
+      .select("*")
+      .in("meal_date", [today, tomorrow])
+      .order("meal_date", { ascending: true });
+    forecastData = fallbackForecasts;
+  }
 
   // Query total student count
   const { count: studentCount } = await supabase
     .from("profiles")
     .select("*", { count: "exact", head: true })
     .eq("role", "student");
-
-  // Query demand forecasts from SQL view
-  const { data: forecastData } = await supabase
-    .from("meal_demand_forecast")
-    .select("*")
-    .in("meal_date", [today, tomorrow])
-    .order("meal_date", { ascending: true });
 
   return (
     <ManagerDashboard

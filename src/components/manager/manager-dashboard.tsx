@@ -34,6 +34,8 @@ interface ManagerDashboardProps {
   tomorrowDate: string;
 }
 
+const MEAL_TYPES = ["breakfast", "lunch", "dinner"] as const;
+
 export function ManagerDashboard({
   profile,
   allForecasts,
@@ -53,11 +55,9 @@ export function ManagerDashboard({
     return allForecasts.filter((f) => f.meal_date === selectedDate);
   }, [allForecasts, selectedDate]);
 
-  const mealTypes = ["breakfast", "lunch", "dinner"] as const;
-
   // Calculate metrics per meal slot
   const mealMetrics = React.useMemo(() => {
-    return mealTypes.map((type) => {
+    return MEAL_TYPES.map((type) => {
       const forecast = forecasts.find((f) => f.meal_type === type);
       const attending = forecast?.attending_count ?? 0;
       const notAttending = forecast?.not_attending_count ?? 0;
@@ -79,7 +79,7 @@ export function ManagerDashboard({
         targetPrep,
       };
     });
-  }, [forecasts, mealTypes, totalStudentCount, unrespondedTurnoutPercent, safetyBufferPercent]);
+  }, [forecasts, totalStudentCount, unrespondedTurnoutPercent, safetyBufferPercent]);
 
   // Overall totals across the 3 meals
   const totalAttending = mealMetrics.reduce((acc, m) => acc + m.attending, 0);

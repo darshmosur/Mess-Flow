@@ -59,15 +59,49 @@ export default async function StudentPage() {
     updated_at: new Date().toISOString(),
   };
 
-  const today = "2026-10-19";
-  const tomorrow = "2026-10-20";
+  const now = new Date();
+  const realToday = now.toISOString().split("T")[0];
+  const tomorrowObj = new Date(now);
+  tomorrowObj.setDate(tomorrowObj.getDate() + 1);
+  const realTomorrow = tomorrowObj.toISOString().split("T")[0];
 
-  // Fetch meals for today and tomorrow
-  const { data: mealsData } = await supabase
+  // Try fetching meals for real calendar dates first
+  let { data: mealsData } = await supabase
     .from("meals")
     .select("*")
-    .in("meal_date", [today, tomorrow])
+    .in("meal_date", [realToday, realTomorrow])
     .order("meal_date", { ascending: true });
+
+  let today = realToday;
+  let tomorrow = realTomorrow;
+
+  // Gracefully fallback to scheduled dates in database if real calendar day has no records
+  if (!mealsData || mealsData.length === 0) {
+    const { data: latestMeals } = await supabase
+      .from("meals")
+      .select("meal_date")
+      .order("meal_date", { ascending: false })
+      .limit(6);
+
+    const dates = Array.from(new Set(latestMeals?.map((m) => m.meal_date) || [])).sort();
+    if (dates.length >= 2) {
+      today = dates[dates.length - 2];
+      tomorrow = dates[dates.length - 1];
+    } else if (dates.length === 1) {
+      today = dates[0];
+      tomorrow = dates[0];
+    } else {
+      today = "2026-10-19";
+      tomorrow = "2026-10-20";
+    }
+
+    const { data: fallbackMeals } = await supabase
+      .from("meals")
+      .select("*")
+      .in("meal_date", [today, tomorrow])
+      .order("meal_date", { ascending: true });
+    mealsData = fallbackMeals;
+  }
 
   // Fetch student's own attendance records (strictly filtered by RLS)
   const { data: attendanceData } = await supabase
